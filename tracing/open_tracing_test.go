@@ -31,12 +31,12 @@ func TestOpenTracingPlugin(t *testing.T) {
 	}
 
 	ctx = core.NewMapContext(context.Background())
-	err = p.DoPostReadRequestHeader(ctx, &core.Request{ServiceMethod: "greeting.Say"})
+	err = p.PostReadRequestHeader(ctx, &core.Request{ServiceMethod: "greeting.Say"})
 	if err != nil {
 		t.Fatalf("failed to DoPostReadRequestHeader: %v", err)
 	}
 
-	err = p.DoPostWriteResponse(ctx, &core.Response{ServiceMethod: "greeting.Say"}, "world")
+	err = p.PostWriteResponse(ctx, &core.Response{ServiceMethod: "greeting.Say"}, "world")
 	if err != nil {
 		t.Fatalf("failed to DoPostWriteResponse: %v", err)
 	}
@@ -44,6 +44,7 @@ func TestOpenTracingPlugin(t *testing.T) {
 	time.Sleep(time.Hour)
 	// see http://localhost:8700/traces to check
 }
+
 func getTracer() opentracing.Tracer {
 	memStore := appdash.NewMemoryStore()
 	store := &appdash.RecentStore{

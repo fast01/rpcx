@@ -62,7 +62,7 @@ func NewServerPrometheusPlugin() *ServerPrometheusPlugin {
 	return &ServerPrometheusPlugin{spanMap: make(map[context.Context]*serverReporter)}
 }
 
-func (p *ServerPrometheusPlugin) DoPostReadRequestHeader(ctx context.Context, r *core.Request) error {
+func (p *ServerPrometheusPlugin) PostReadRequestHeader(ctx context.Context, r *core.Request) error {
 	monitor := newServerReporter(r.ServiceMethod)
 	monitor.ReceivedMessage()
 
@@ -73,7 +73,7 @@ func (p *ServerPrometheusPlugin) DoPostReadRequestHeader(ctx context.Context, r 
 	return nil
 }
 
-func (p *ServerPrometheusPlugin) DoPostWriteResponse(ctx context.Context, resp *core.Response, body interface{}) error {
+func (p *ServerPrometheusPlugin) PostWriteResponse(ctx context.Context, resp *core.Response, body interface{}) error {
 	var monitor *serverReporter
 	p.spanMapLock.RLock()
 	monitor = p.spanMap[ctx]

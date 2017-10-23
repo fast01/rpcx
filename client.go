@@ -427,8 +427,8 @@ func reconnect(client *core.Client, clientAndServer map[string]*core.Client, rpc
 	for k, v := range clientAndServer {
 		if v == client {
 			server = k
+			break
 		}
-		break
 	}
 
 	if server != "" {

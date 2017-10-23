@@ -9,10 +9,12 @@ import (
 	"net/http"
 	"time"
 
-	quicconn "github.com/marten-seemann/quic-conn"
+	//quicconn "github.com/marten-seemann/quic-conn"
+	//"github.com/marten-seemann/quic-conn"
 	"github.com/smallnest/rpcx/core"
 	"github.com/smallnest/rpcx/log"
 	kcp "github.com/xtaci/kcp-go"
+
 )
 
 // NewDirectRPCClient creates a rpc client
@@ -23,8 +25,10 @@ func NewDirectRPCClient(c *Client, clientCodecFunc ClientCodecFunc, network, add
 		return NewDirectHTTPRPCClient(c, clientCodecFunc, network, address, "", timeout)
 	case "kcp":
 		return NewDirectKCPRPCClient(c, clientCodecFunc, network, address, "", timeout)
+	/*
 	case "quic":
 		return NewDirectQuicRPCClient(c, clientCodecFunc, network, address, "", timeout)
+		*/
 	default:
 	}
 
@@ -148,6 +152,7 @@ func NewDirectKCPRPCClient(c *Client, clientCodecFunc ClientCodecFunc, network, 
 	return wrapConn(c, clientCodecFunc, conn)
 }
 
+/*
 // NewDirectQuicRPCClient creates a quic client.
 func NewDirectQuicRPCClient(c *Client, clientCodecFunc ClientCodecFunc, network, address string, path string, timeout time.Duration) (*core.Client, error) {
 	var conn net.Conn
@@ -168,3 +173,4 @@ func NewDirectQuicRPCClient(c *Client, clientCodecFunc ClientCodecFunc, network,
 
 	return wrapConn(c, clientCodecFunc, conn)
 }
+*/

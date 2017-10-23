@@ -7,8 +7,9 @@ import (
 	"net"
 
 	reuseport "github.com/kavu/go_reuseport"
-	quicconn "github.com/marten-seemann/quic-conn"
+	//quicconn "github.com/marten-seemann/quic-conn"
 	kcp "github.com/xtaci/kcp-go"
+	//"github.com/marten-seemann/quic-conn"
 )
 
 // block can be nil if the caller wishes to skip encryption in kcp.
@@ -25,8 +26,8 @@ func makeListener(network, address string, block kcp.BlockCrypt, tlsConfig *tls.
 		}
 
 		ln, err = reuseport.NewReusablePortListener(network, address)
-	case "quic":
-		ln, err = quicconn.Listen("udp", address, tlsConfig)
+	//case "quic":
+	//	ln, err = quicconn.Listen("udp", address, tlsConfig)
 	default: //tcp
 		ln, err = net.Listen(network, address)
 	}

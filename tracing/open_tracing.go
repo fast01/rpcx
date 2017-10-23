@@ -81,7 +81,7 @@ func (p *OpenTracingPlugin) DoPostCall(ctx context.Context, serviceMethod string
 	return nil
 }
 
-func (p *OpenTracingPlugin) DoPostReadRequestHeader(ctx context.Context, r *core.Request) error {
+func (p *OpenTracingPlugin) PostReadRequestHeader(ctx context.Context, r *core.Request) error {
 	header, ok := core.FromContext(ctx)
 	if !ok {
 		header = core.NewHeader()
@@ -106,7 +106,7 @@ func (p *OpenTracingPlugin) DoPostReadRequestHeader(ctx context.Context, r *core
 	return nil
 }
 
-func (p *OpenTracingPlugin) DoPostWriteResponse(ctx context.Context, resp *core.Response, body interface{}) error {
+func (p *OpenTracingPlugin) PostWriteResponse(ctx context.Context, resp *core.Response, body interface{}) error {
 	var serverSpan opentracing.Span
 	p.spanMapLock.RLock()
 	serverSpan = p.spanMap[ctx]

@@ -6,7 +6,7 @@ import (
 	"crypto/tls"
 	"net"
 
-	quicconn "github.com/marten-seemann/quic-conn"
+	//quicconn "github.com/marten-seemann/quic-conn"
 	kcp "github.com/xtaci/kcp-go"
 )
 
@@ -24,11 +24,12 @@ func makeListener(network, address string, block kcp.BlockCrypt, tlsConfig *tls.
 		}
 
 		ln, err = net.Listen(network, address)
-	case "quic":
-		ln, err = quicconn.Listen("udp", address, tlsConfig)
+	//case "quic":
+	//	ln, err = quicconn.Listen("udp", address, tlsConfig)
 	default: //tcp
 		ln, err = net.Listen(network, address)
 	}
 
 	return ln, err
 }
+

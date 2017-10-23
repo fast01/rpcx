@@ -255,6 +255,7 @@ func (s *Server) Serve(network, address string) (err error) {
 		}
 		var ok bool
 		if c, ok = s.PluginContainer.DoPostConnAccept(c); !ok {
+			log.Errorf("client is not accepted: %s", c.RemoteAddr().String())
 			continue
 		}
 
@@ -283,6 +284,7 @@ func (s *Server) ServeTLS(network, address string, config *tls.Config) (err erro
 
 		var ok bool
 		if c, ok = s.PluginContainer.DoPostConnAccept(c); !ok {
+			log.Errorf("client is not accepted: %s", c.RemoteAddr().String())
 			continue
 		}
 

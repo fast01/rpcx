@@ -275,7 +275,9 @@ func (server *Server) register(rcvr interface{}, name string, useName bool) erro
 		return errors.New(s)
 	}
 	if _, present := server.serviceMap[sname]; present {
-		return errors.New("rpc: service already defined: " + sname)
+		s:="rpc: service already defined: " + sname
+		log.Info(s)
+		return errors.New(s)
 	}
 	s.name = sname
 
@@ -665,7 +667,9 @@ func (server *Server) readRequestHeader(ctx context.Context, codec ServerCodec) 
 		if err == io.EOF || err == io.ErrUnexpectedEOF {
 			return
 		}
-		err = errors.New("rpc: server cannot decode request: " + err.Error())
+		s := "rpc: server cannot decode request: " + err.Error()
+		//log.Error(s)
+		err = errors.New(s)
 		return
 	}
 
