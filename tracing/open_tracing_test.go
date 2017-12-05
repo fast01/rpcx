@@ -9,7 +9,7 @@ import (
 	"time"
 
 	opentracing "github.com/opentracing/opentracing-go"
-	"github.com/smallnest/rpcx/core"
+	"github.com/fast01/rpcx/core"
 	"sourcegraph.com/sourcegraph/appdash"
 	appdashtracer "sourcegraph.com/sourcegraph/appdash/opentracing"
 	"sourcegraph.com/sourcegraph/appdash/traceapp"
@@ -21,11 +21,11 @@ func TestOpenTracingPlugin(t *testing.T) {
 
 	header := make(map[string][]string)
 	ctx := core.NewContext(context.Background(), header)
-	err := p.DoPreCall(ctx, "greeting.Say", "smallnest", "")
+	err := p.DoPreCall(ctx, "greeting.Say", "fast01", "")
 	if err != nil {
 		t.Fatalf("failed to DoPreCall: %v", err)
 	}
-	err = p.DoPostCall(ctx, "greeting.Say", "smallnest", "")
+	err = p.DoPostCall(ctx, "greeting.Say", "fast01", "")
 	if err != nil {
 		t.Fatalf("failed to DoPostCall: %v", err)
 	}

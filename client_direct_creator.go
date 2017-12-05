@@ -11,8 +11,8 @@ import (
 
 	//quicconn "github.com/marten-seemann/quic-conn"
 	//"github.com/marten-seemann/quic-conn"
-	"github.com/smallnest/rpcx/core"
-	"github.com/smallnest/rpcx/log"
+	"github.com/fast01/rpcx/core"
+	"github.com/fast01/rpcx/log"
 	kcp "github.com/xtaci/kcp-go"
 
 )

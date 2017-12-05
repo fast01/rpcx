@@ -141,7 +141,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/smallnest/rpcx/log"
+	"github.com/fast01/rpcx/log"
 )
 
 const (
@@ -181,19 +181,24 @@ type service struct {
 // network traffic.
 type Request struct {
 	ServiceMethod string   // format: "Service.Method"
-	Header        string   // headers
-	Seq           uint64   // sequence number chosen by client
-	next          *Request // for free list in Server
+	Header  string   // string   // headers
+	Seq     uint64   // sequence number chosen by client
+	Data    interface{}
+	next    *Request // for free list in Server
 }
+
+// for  invalidRequest type
+type InvalidRequest struct {}
 
 // Response is a header written before every RPC return. It is used internally
 // but documented here as an aid to debugging, such as when analyzing
 // network traffic.
 type Response struct {
-	ServiceMethod string    // echoes that of the Request
+	ServiceMethod		  string    // echoes that of the Request
 	Header        string    // headers
 	Seq           uint64    // echoes that of the request
 	Error         string    // error, if any.
+	Data    	  interface{}
 	next          *Response // for free list in Server
 }
 
@@ -298,6 +303,7 @@ func (server *Server) register(rcvr interface{}, name string, useName bool) erro
 		return errors.New(str)
 	}
 	server.serviceMap[s.name] = s
+	log.Infof("rpc.Register a service-method: %+v %+v\n", s.name, s.method)
 	return nil
 }
 
@@ -313,6 +319,7 @@ func suitableMethods(typ reflect.Type, reportErr bool) map[string]*methodType {
 		if method.PkgPath != "" {
 			continue
 		}
+		log.Infof("find method:[%v/%v]:%+v\n", m, typ.NumMethod(), method)
 		// Method needs three ins: receiver, *args, *reply
 		// or Method needs four ins: receiver, context, *args, *reply
 		if mtype.NumIn() != 3 && mtype.NumIn() != 4 {
@@ -394,7 +401,7 @@ func suitableMethods(typ reflect.Type, reportErr bool) map[string]*methodType {
 // A value sent as a placeholder for the server's response value when the server
 // receives an invalid request. It is never decoded by the client since the Response
 // contains an error when it is used.
-var invalidRequest = struct{}{}
+var invalidRequest = InvalidRequest{}
 
 func (server *Server) sendResponse(ctx context.Context, sending *sync.Mutex, req *Request, reply interface{}, codec ServerCodec, errmsg string) {
 	resp := server.getResponse()
@@ -698,11 +705,15 @@ func (server *Server) readRequestHeader(ctx context.Context, codec ServerCodec) 
 		err = errors.New("rpc: can't find method " + req.ServiceMethod)
 		return
 	}
+	{
+	 	mthod := mtype.method
+		log.Tracef("find the method:%+v, %+v\n", mthod, mthod.Func)
+	}
 
 	//extract header into context
 	if req.Header != "" {
 		var header Header
-		header, err = decodeHeader(req.Header)
+		header, err = DefaultHeaderCodec.DecodeHeader(req.Header)
 		if err != nil {
 			return
 		}
@@ -712,7 +723,6 @@ func (server *Server) readRequestHeader(ctx context.Context, codec ServerCodec) 
 				m[HeaderKey] = header
 			}
 		}
-
 	}
 	return
 }
@@ -749,6 +759,15 @@ func RegisterName(name string, rcvr interface{}) error {
 // connection. ReadRequestBody may be called with a nil
 // argument to force the body of the request to be read and discarded.
 type ServerCodec interface {
+	ReadRequestHeader(context.Context,  *Request) error
+	ReadRequestBody(context.Context, interface{}) error
+	// WriteResponse must be safe for concurrent use by multiple goroutines.
+	WriteResponse(context.Context, *Response, interface{}) error
+
+	Close() error
+}
+
+type ServerCodecOld interface {
 	ReadRequestHeader(context.Context, *Request) error
 	ReadRequestBody(context.Context, interface{}) error
 	// WriteResponse must be safe for concurrent use by multiple goroutines.
@@ -756,6 +775,7 @@ type ServerCodec interface {
 
 	Close() error
 }
+
 
 // ServeConn runs the DefaultServer on a single connection.
 // ServeConn blocks, serving the connection until the client hangs up.

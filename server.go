@@ -10,15 +10,19 @@ import (
 	"strings"
 	"time"
 
-	msgpackrpc2 "github.com/rpcx-ecosystem/net-rpc-msgpackrpc2"
-	"github.com/smallnest/rpcx/core"
-	"github.com/smallnest/rpcx/log"
+	//msgpackrpc2 "github.com/rpcx-ecosystem/net-rpc-msgpackrpc2"
+	brpc "github.com/fast01/rpcx/codec/brpc"
+	"github.com/fast01/rpcx/core"
+	"github.com/fast01/rpcx/log"
 	kcp "github.com/xtaci/kcp-go"
 )
 
 const (
 	//DefaultRPCPath is the defaut HTTP RPC PATH
 	DefaultRPCPath = "/_goRPC_"
+	DefaultTimeout = 3000000000
+	DefaultWriteTimeout = 3000000000
+	DefaultReadTimeout = 3000000000
 )
 
 var IP4Reg = regexp.MustCompile(`^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$`)
@@ -155,7 +159,10 @@ func NewServer() *Server {
 	return &Server{
 		rpcServer:       core.NewServer(),
 		PluginContainer: &ServerPluginContainer{plugins: make([]IPlugin, 0)},
-		ServerCodecFunc: msgpackrpc2.NewServerCodec,
+		ServerCodecFunc: brpc.NewServerCodec,
+		Timeout:	  DefaultTimeout,
+		ReadTimeout:  DefaultReadTimeout,
+		WriteTimeout: DefaultWriteTimeout,
 	}
 }
 

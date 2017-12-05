@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/smallnest/rpcx/log"
+	"github.com/fast01/rpcx/log"
 )
 
 func TestPing(t *testing.T) {

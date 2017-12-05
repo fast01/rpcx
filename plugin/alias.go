@@ -3,7 +3,7 @@ package plugin
 import (
 	"context"
 
-	"github.com/smallnest/rpcx/core"
+	"github.com/fast01/rpcx/core"
 )
 
 //AliasPlugin can be used to set aliases for services
@@ -12,7 +12,7 @@ type AliasPlugin struct {
 }
 
 // Alias sets a alias for the serviceMethod.
-// For example Alias("Arith.Mul", "mul")
+// For example Alias("mul", "Arith.Mul")
 func (p *AliasPlugin) Alias(alias string, serviceMethod string) {
 	p.Aliases[alias] = serviceMethod
 }

@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/smallnest/rpcx"
-	"github.com/smallnest/rpcx/core"
+	"github.com/fast01/rpcx"
+	"github.com/fast01/rpcx/core"
 )
 
 // ServerPeer is

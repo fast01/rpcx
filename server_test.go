@@ -8,8 +8,8 @@ import (
 	"time"
 
 	msgpack2 "github.com/rpcx-ecosystem/net-rpc-msgpackrpc2"
-	"github.com/smallnest/rpcx/codec"
-	"github.com/smallnest/rpcx/core"
+	"github.com/fast01/rpcx/codec"
+	"github.com/fast01/rpcx/core"
 )
 
 var (

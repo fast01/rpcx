@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/smallnest/rpcx/log"
+	"github.com/fast01/rpcx/log"
 )
 
 func TestConsulRegisterPlugin_Register(t *testing.T) {

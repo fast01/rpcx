@@ -5,16 +5,9 @@ import (
 	"net/url"
 )
 
-// encodeHeader encodes a header as a string.
-func encodeHeader(h Header) string {
-	headerMap := (url.Values)(h)
-	return headerMap.Encode()
-}
-
-// decodeHeader decodes a string as a Header.
-func decodeHeader(s string) (Header, error) {
-	v, err := url.ParseQuery(s)
-	return Header(v), err
+type HeaderCodec interface {
+	EncodeHeader(h Header) string
+	DecodeHeader(s string) (Header, error)
 }
 
 // A Header represents the key-value pairs in an RPCX header.
@@ -78,5 +71,30 @@ func (h Header) clone() Header {
 }
 
 func (h Header) String() string {
-	return encodeHeader(h)
+	return DefaultHeaderCodec.EncodeHeader(h)
 }
+
+
+type defaultHeaderCodec struct {
+
+}
+
+// encodeHeader encodes a header as a string.
+func (defaultHeaderCodec)EncodeHeader(h Header) string {
+	headerMap := (url.Values)(h)
+	return headerMap.Encode()
+}
+
+// decodeHeader decodes a string as a Header.
+func (defaultHeaderCodec)DecodeHeader(s string) (Header, error) {
+	v, err := url.ParseQuery(s)
+	return Header(v), err
+}
+
+func  NewHeaderCodec() HeaderCodec {
+	return &defaultHeaderCodec{}
+}
+
+
+// user can assign a new Header codec of custom implemention
+var DefaultHeaderCodec = NewHeaderCodec()

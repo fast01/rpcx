@@ -6,7 +6,7 @@ import (
 	"time"
 
 	prom "github.com/prometheus/client_golang/prometheus"
-	"github.com/smallnest/rpcx/core"
+	"github.com/fast01/rpcx/core"
 )
 
 var (

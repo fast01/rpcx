@@ -13,8 +13,8 @@ import (
 	"net"
 	"net/http"
 	"sync"
-
-	"github.com/smallnest/rpcx/log"
+	"github.com/fast01/rpcx/log"
+	"math"
 )
 
 // ServerError represents an error that has been returned from
@@ -94,6 +94,9 @@ func (client *Client) send(ctx context.Context, call *Call) {
 	}
 	seq := client.seq
 	client.seq++
+	if client.seq >= math.MaxInt64 {
+		client.seq = 1
+	}
 	client.pending[seq] = call
 	client.mutex.Unlock()
 
@@ -105,7 +108,7 @@ func (client *Client) send(ctx context.Context, call *Call) {
 	client.request.Seq = seq
 	header, ok := FromContext(ctx)
 	if ok {
-		client.request.Header = encodeHeader(header)
+		client.request.Header = DefaultHeaderCodec.EncodeHeader(header)
 	}
 	client.request.ServiceMethod = call.ServiceMethod
 	err := client.codec.WriteRequest(ctx, &client.request, call.Args)
@@ -129,6 +132,7 @@ func (client *Client) input() {
 		if client.codec == nil {
 			break
 		}
+		//How about not got enough data yet to  parse resp data ?
 		err = client.codec.ReadResponseHeader(&response)
 		if err != nil {
 			break

@@ -1,0 +1,14 @@
+syntax="proto2";
+
+package Arith;
+option java_package="com.baidu.rpc.Arith";
+option java_outer_classname="Arith";
+
+message Args {
+	optional int32 A = 1;
+	optional int32 B = 2;
+}
+
+message Reply {
+	optional int32 C = 1;
+}

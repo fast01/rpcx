@@ -1,8 +1,0 @@
-struct GencodeArgs {
-	A int32
-	B int32
-}
-
-struct GencodeReply {
-	C int32
-}

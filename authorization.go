@@ -6,7 +6,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/smallnest/rpcx/core"
+	"github.com/fast01/rpcx/core"
 )
 
 // AuthorizationServerPlugin is used to authorize clients.

@@ -1,0 +1,52 @@
+syntax="proto2";
+
+package demo.uidmap;
+
+option cc_generic_services = true;
+option java_generic_services = true;
+
+enum ECode
+{
+    SUCCESS             = 0;       // success
+    FAIL                = -10001;  // server fail
+    NOT_EXIST           = -10002;  // not exist
+    CLINENT_FORBIDDEN   = -10003;  // no right
+    CLIENT_ERROR        = -10004;  // param error, etc.
+}
+
+enum AccountType
+{
+    UNKNOWN = 0;
+    NORMAL  = 1;
+    THIRD   = 2;
+}
+enum AccountFlag
+{
+    INIT   = 0; 
+    ACTIVE = 1;
+    DISABLE = 2;
+}
+
+message AccountInfo
+{
+   required AccountType  type = 1;
+   required uint64 id   = 2;
+   optional int32  flag = 3;
+}
+
+message QueryUidRequest
+{
+    required AccountInfo accinfo = 1;
+}
+
+message QueryUidResponse
+{
+    required  ECode  status = 1;
+    optional  string msg   = 2;
+    optional  AccountInfo uid = 3;
+}
+
+service UidmapService
+{
+    rpc query_uid(QueryUidRequest)         returns (QueryUidResponse);
+}

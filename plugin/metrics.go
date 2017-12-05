@@ -8,7 +8,7 @@ import (
 
 	"github.com/rcrowley/go-metrics"
 	"github.com/rcrowley/go-metrics/exp"
-	"github.com/smallnest/rpcx/core"
+	"github.com/fast01/rpcx/core"
 	influxdb "github.com/vrischmann/go-metrics-influxdb"
 )
 

@@ -10,9 +10,10 @@ import (
 	"sync"
 	"time"
 
-	msgpackrpc2 "github.com/rpcx-ecosystem/net-rpc-msgpackrpc2"
-	"github.com/smallnest/rpcx/core"
-	"github.com/smallnest/rpcx/log"
+	//msgpackrpc2 "github.com/rpcx-ecosystem/net-rpc-msgpackrpc2"
+	brpc "github.com/fast01/rpcx/codec/brpc"
+	"github.com/fast01/rpcx/core"
+	"github.com/fast01/rpcx/log"
 	kcp "github.com/xtaci/kcp-go"
 )
 
@@ -90,7 +91,7 @@ type DirectClientSelector struct {
 func (s *DirectClientSelector) Select(clientCodecFunc ClientCodecFunc, options ...interface{}) (*core.Client, error) {
 	s.Lock()
 	defer s.Unlock()
-	if s.rpcClient != nil {
+	if s.rpcClient != nil &&  !s.rpcClient.IsShutdown(){
 		return s.rpcClient, nil
 	}
 
@@ -129,7 +130,9 @@ func (s *DirectClientSelector) HandleFailedClient(client *core.Client) {
 // ClientCodecFunc is used to create a  core.ClientCodecFunc from net.Conn.
 type ClientCodecFunc func(conn io.ReadWriteCloser) core.ClientCodec
 
-// Client represents a RPC client.
+// Client represents a RPC client
+// which holds a client selector that selects a core.Client
+//
 type Client struct {
 	ClientSelector  ClientSelector
 	ClientCodecFunc ClientCodecFunc
@@ -150,7 +153,7 @@ type Client struct {
 func NewClient(s ClientSelector) *Client {
 	client := &Client{
 		PluginContainer: &ClientPluginContainer{plugins: make([]IPlugin, 0)},
-		ClientCodecFunc: msgpackrpc2.NewClientCodec,
+		ClientCodecFunc: brpc.NewClientCodec,
 		ClientSelector:  s,
 		FailMode:        Failfast,
 		Retries:         3}

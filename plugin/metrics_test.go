@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/rcrowley/go-metrics"
-	"github.com/smallnest/rpcx"
+	"github.com/fast01/rpcx"
 )
 
 var (
