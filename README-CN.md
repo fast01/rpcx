@@ -1,5 +1,20 @@
 # rpcx
 
+
+[**NOTE**] 
+
+This folk is based on the rpcx 2.0.  
+I made little changes that can support brpc(baidu-rpc), now rpcx can interact with rpc servers or clients written brpc(c++), using std protocol. 
+See [dev branch](https://github.com/fast01/rpcx/tree/dev) for details. 
+Example: [_examples/uidmap](https://github.com/fast01/rpcx/tree/dev/_examples/uidmap). 
+since rpcx 3.0 has big changes compared with 2.0.   I will see how to merge these changes to rpcx 3.0 latter.
+
+Any pull requests are wellcome!!!
+
+
+----
+
+
 [![License](https://img.shields.io/:license-apache-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![GoDoc](https://godoc.org/github.com/smallnest/rpcx?status.png)](http://godoc.org/github.com/smallnest/rpcx) [![Drone Build Status](https://drone.io/github.com/smallnest/rpcx/status.png)](https://drone.io/github.com/smallnest/rpcx/latest) [![travis](https://travis-ci.org/smallnest/rpcx.svg?branch=master)](https://travis-ci.org/smallnest/rpcx) [![Go Report Card](https://goreportcard.com/badge/github.com/smallnest/rpcx)](https://goreportcard.com/report/github.com/smallnest/rpcx) [![QQ群](https://img.shields.io/:QQ群-398044387-blue.svg)](_documents/images/rpcx_qq.png)
 
 QQ群: 398044387 ![](_documents/images/rpcx_qq.png)
